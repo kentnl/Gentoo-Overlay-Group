@@ -12,10 +12,67 @@ use MooseX::Types::Moose qw( :all );
 use MooseX::Types::Path::Class qw( Dir );
 use namespace::autoclean;
 
-use Gentoo::Overlay v1.0.2;
+use Gentoo::Overlay 1.0000002;
 use Gentoo::Overlay::Types qw( :all );
 use Gentoo::Overlay::Exceptions qw( :all );
 use Scalar::Util qw( blessed );
+
+=head1 SYNOPSIS
+
+This is a wrapper around L<< C<Gentoo::Overlay>|Gentoo::Overlay >> that makes it easier to perform actions on a group of overlays.
+
+  my $group = Gentoo::Overlay::Group->new();
+  $group->add_overlay('/usr/portage');
+  $group->add_overlay('/usr/local/portage/');
+  $group->iterate( packages => sub {
+    my ( $self, $context ) = @_;
+    # Traverse-Order:
+    # ::gentoo
+    #   category_a
+    #     package_a
+    #     package_b
+    #   category_b
+    #     package_a
+    #     package_b
+    # ::hentoo
+    #   category_a
+    #     package_a
+    #     package_b
+    #   category_b
+    #     package_a
+    #     package_b
+  });
+
+
+=cut
+
+=p_attr _overlays
+
+  isa => HashRef[ Gentoo__Overlay_Overlay ], ro, lazy
+
+=p_attr_acc _has_overlay
+
+  if( $object->_has_overlay('gentoo') ){
+    Carp::croak('waah');
+  }
+
+=p_attr_acc _set_overlay
+
+  $object->_set_overlay( 'gentoo' => $overlay_object );
+
+=attr_acc overlay_names
+
+  my @names = $object->overlay_names
+
+=attr_acc overlays
+
+  my @overlays = $object->overlays;
+
+=attr_acc get_overlay
+
+  my $overlay = $object->get_overlay('gentoo');
+
+=cut
 
 has '_overlays' => (
   ro, lazy,
@@ -33,12 +90,29 @@ has '_overlays' => (
 
 my $_str = Str();
 
+=p_func _type_print
+
+Lightweight flat dumper optimised for displaying user parameters in a format similar to a method signature.
+
+  printf '[%s]', join q{,} , map { _type_print } @array
+
+=cut
+
 sub _type_print {
-  ref $_         ? ref $_
+  return
+      ref $_     ? ref $_
     : defined $_ ? 'scalar<' . $_ . '>'
     : 'scalar=undef'
 
 }
+
+=method add_overlay
+
+  $object->add_overlay( '/path/to/overlay' );
+  $object->add_overlay( Path::Class::Dir->new( '/path/to/overlay' ) );
+  $object->add_overlay( Gentoo::Overlay->new( path => '/path/to/overlay' ) );
+
+=cut
 
 sub add_overlay {
   my ( $self, @args ) = @_;
@@ -58,6 +132,15 @@ sub add_overlay {
   );
 }
 
+=method iterate
+
+  $object->iterate( ebuilds => sub {
+
+
+  });
+
+=cut
+
 sub iterate {
   my ( $self, $what, $callback ) = @_;
   my %method_map = (
@@ -76,6 +159,12 @@ sub iterate {
   );
 }
 
+=p_method _iterate_ebuilds
+
+  $object->_iterate_ebuilds( ignored => sub { } );
+
+=cut
+
 sub _iterate_ebuilds {
   my ( $self, $what, $callback ) = @_;
   my $real_callback = sub {
@@ -89,6 +178,12 @@ sub _iterate_ebuilds {
   $self->_iterate_packages( packages => $real_callback );
   return;
 }
+
+=p_method _iterate_categories
+
+  $object->_iterate_categories( ignored => sub { } );
+
+=cut
 
 # categories = { /overlays/categories
 
@@ -106,6 +201,12 @@ sub _iterate_categories {
   return;
 }
 
+=p_method _iterate_packages
+
+  $object->_iterate_packages( ignored => sub { } );
+
+=cut
+
 sub _iterate_packages {
   my ( $self, $what, $callback ) = @_;
   my $real_callback = sub {
@@ -119,6 +220,12 @@ sub _iterate_packages {
   $self->_iterate_categories( categories => $real_callback );
   return;
 }
+
+=p_method _iterate_overlays
+
+  $object->_iterate_overlays( ignored => sub { } );
+
+=cut
 
 # overlays = { /overlays }
 sub _iterate_overlays {
@@ -140,6 +247,7 @@ sub _iterate_overlays {
     );
     $offset++;
   }
+  return;
 }
 
 my $_gentoo_overlay = Gentoo__Overlay_Overlay();
@@ -147,17 +255,25 @@ my $_path_class_dir = Dir();
 
 # This would be better in M:M:TypeCoercion
 
+=p_func __can_coerce
+
+  if( __can_coerce( MX::Type Object , $thing_to_coerce ) ) {
+
+  }
+
+=cut
+
 sub __can_corce {
   my ( $to_type, $from_thing ) = @_;
   if ( not defined $to_type->{_compiled_can_coerce} ) {
     my @coercion_map = @{ $to_type->type_coercion_map };
     my @coercions;
     while (@coercion_map) {
-      my ( $constraint_name, $action ) = splice( @coercion_map, 0, 2 );
+      my ( $constraint_name, $action ) = ( splice @coercion_map, 0, 2 );
       my $type_constraint =
         ref $constraint_name ? $constraint_name : Moose::Util::TypeConstraints::find_or_parse_type_constraint($constraint_name);
 
-      unless ( defined $type_constraint ) {
+      if ( not defined $type_constraint ) {
         require Moose;
         Moose->throw_error("Could not find the type constraint ($constraint_name) to coerce from");
       }
@@ -167,7 +283,7 @@ sub __can_corce {
     $to_type->{_compiled_can_coerce} = sub {
       my $thing = shift;
       foreach my $coercion (@coercions) {
-        my ( $constraint, $converter ) = @$coercion;
+        my ( $constraint, $converter ) = @{$coercion};
         if ( $constraint->($thing) ) {
           return 1;
         }
@@ -177,6 +293,12 @@ sub __can_corce {
   }
   return $to_type->{_compiled_can_coerce}->($from_thing);
 }
+
+=p_method _add_overlay_object
+
+  $groupobject->_add_overlay_object( $object );
+
+=cut
 
 sub _add_overlay_object {
   my ( $self, $object, @rest ) = @_;
@@ -197,6 +319,12 @@ sub _add_overlay_object {
   );
 }
 
+=p_method _add_overlay_gentoo_object
+
+  $groupobject->_add_overlay_gentoo_object( $gentoo_object );
+
+=cut
+
 sub _add_overlay_gentoo_object {
   my ( $self, $object, @rest ) = @_;
   $_gentoo_overlay->assert_valid($object);
@@ -208,9 +336,16 @@ sub _add_overlay_gentoo_object {
     );
   }
   $self->_set_overlay( $object->name, $object );
+  return;
 }
 
-sub _add_overlay_path_class {
+=p_method _add_overlay_path_class
+
+  $groupobject->_add_overlay_path_class( $path_class_object );
+
+=cut
+
+sub _add_overlay_path_class {    ## no critic ( RequireArgUnpacking )
   my ( $self, $path, @rest ) = @_;
   $_path_class_dir->assert_valid($path);
   my $go = Gentoo::Overlay->new( path => $path, );
@@ -218,7 +353,13 @@ sub _add_overlay_path_class {
   goto $self->can('_add_overlay_gentoo_object');
 }
 
-sub _add_overlay_string_path {
+=p_method _add_overlay_string_path
+
+  $groupobject->_add_overlay_string_path( $path_string );
+
+=cut
+
+sub _add_overlay_string_path {    ## no critic ( RequireArgUnpacking )
   my ( $self, $path_str, @rest ) = @_;
   $_str->assert_valid($path_str);
   my $path = $_path_class_dir->coerce($path_str);
