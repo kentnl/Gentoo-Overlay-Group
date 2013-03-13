@@ -92,7 +92,7 @@ my $_str = Str();
 
 =p_func _type_print
 
-Lightweight flat dumper optimised for displaying user parameters in a format similar to a method signature.
+Lightweight flat dumper optimized for displaying user parameters in a format similar to a method signature.
 
   printf '[%s]', join q{,} , map { _type_print } @array
 
