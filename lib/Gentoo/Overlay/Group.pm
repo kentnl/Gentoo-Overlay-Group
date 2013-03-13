@@ -12,7 +12,7 @@ use MooseX::Types::Moose qw( :all );
 use MooseX::Types::Path::Tiny qw( Dir );
 use namespace::autoclean;
 
-use Gentoo::Overlay 1.0000003;
+use Gentoo::Overlay v1.0.3;
 use Gentoo::Overlay::Types qw( :all );
 use Gentoo::Overlay::Exceptions qw( :all );
 use Scalar::Util qw( blessed );
