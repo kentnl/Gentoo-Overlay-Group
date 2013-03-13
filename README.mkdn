@@ -1,0 +1,140 @@
+# NAME
+
+Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
+
+# VERSION
+
+version 0.1.1
+
+# SYNOPSIS
+
+This is a wrapper around [`Gentoo::Overlay`](http://search.cpan.org/perldoc?Gentoo::Overlay) that makes it easier to perform actions on a group of overlays.
+
+    my $group = Gentoo::Overlay::Group->new();
+    $group->add_overlay('/usr/portage');
+    $group->add_overlay('/usr/local/portage/');
+    $group->iterate( packages => sub {
+      my ( $self, $context ) = @_;
+      # Traverse-Order:
+      # ::gentoo
+      #   category_a
+      #     package_a
+      #     package_b
+      #   category_b
+      #     package_a
+      #     package_b
+      # ::hentoo
+      #   category_a
+      #     package_a
+      #     package_b
+      #   category_b
+      #     package_a
+      #     package_b
+    });
+
+# METHODS
+
+## add\_overlay
+
+    $object->add_overlay( '/path/to/overlay' );
+    $object->add_overlay( Path::Tiny::path( '/path/to/overlay' ) );
+    $object->add_overlay( Gentoo::Overlay->new( path => '/path/to/overlay' ) );
+
+## iterate
+
+    $object->iterate( ebuilds => sub {
+
+
+
+    });
+
+# ATTRIBUTE ACCESSORS
+
+## overlay\_names
+
+    my @names = $object->overlay_names
+
+## overlays
+
+    my @overlays = $object->overlays;
+
+## get\_overlay
+
+    my $overlay = $object->get_overlay('gentoo');
+
+# PRIVATE ATTRIBUTES
+
+## \_overlays
+
+    isa => HashRef[ Gentoo__Overlay_Overlay ], ro, lazy
+
+# PRIVATE ATTRIBUTE ACCESSORS
+
+## \_has\_overlay
+
+    if( $object->_has_overlay('gentoo') ){
+      Carp::croak('waah');
+    }
+
+## \_set\_overlay
+
+    $object->_set_overlay( 'gentoo' => $overlay_object );
+
+# PRIVATE FUNCTIONS
+
+## \_type\_print
+
+Lightweight flat dumper optimised for displaying user parameters in a format similar to a method signature.
+
+    printf '[%s]', join q{,} , map { _type_print } @array
+
+## \_\_can\_coerce
+
+    if( __can_coerce( MX::Type Object , $thing_to_coerce ) ) {
+
+    }
+
+# PRIVATE METHODS
+
+## \_iterate\_ebuilds
+
+    $object->_iterate_ebuilds( ignored => sub { } );
+
+## \_iterate\_categories
+
+    $object->_iterate_categories( ignored => sub { } );
+
+## \_iterate\_packages
+
+    $object->_iterate_packages( ignored => sub { } );
+
+## \_iterate\_overlays
+
+    $object->_iterate_overlays( ignored => sub { } );
+
+## \_add\_overlay\_object
+
+    $groupobject->_add_overlay_object( $object );
+
+## \_add\_overlay\_gentoo\_object
+
+    $groupobject->_add_overlay_gentoo_object( $gentoo_object );
+
+## \_add\_overlay\_path\_class
+
+    $groupobject->_add_overlay_path_class( $path_class_object );
+
+## \_add\_overlay\_string\_path
+
+    $groupobject->_add_overlay_string_path( $path_string );
+
+# AUTHOR
+
+Kent Fredric <kentnl@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Kent Fredric <kentnl@cpan.org>.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
