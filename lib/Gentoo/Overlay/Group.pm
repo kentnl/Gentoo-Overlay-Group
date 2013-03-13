@@ -9,10 +9,10 @@ use Moose;
 
 use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw( :all );
-use MooseX::Types::Path::Class qw( Dir );
+use MooseX::Types::Path::Tiny qw( Dir );
 use namespace::autoclean;
 
-use Gentoo::Overlay 1.0000002;
+use Gentoo::Overlay 1.0000003;
 use Gentoo::Overlay::Types qw( :all );
 use Gentoo::Overlay::Exceptions qw( :all );
 use Scalar::Util qw( blessed );
@@ -109,7 +109,7 @@ sub _type_print {
 =method add_overlay
 
   $object->add_overlay( '/path/to/overlay' );
-  $object->add_overlay( Path::Class::Dir->new( '/path/to/overlay' ) );
+  $object->add_overlay( Path::Tiny::path( '/path/to/overlay' ) );
   $object->add_overlay( Gentoo::Overlay->new( path => '/path/to/overlay' ) );
 
 =cut
@@ -126,7 +126,7 @@ sub add_overlay {
     ident   => 'bad overlay type',
     message => qq{Unrecognised parameter types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
     payload => {
-      signatures => ( join q{},  map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Class::Dir Gentoo::Overlay ) ),
+      signatures => ( join q{},  map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type       => ( join q{,}, map { _type_print } @args ),
     }
   );
@@ -313,7 +313,7 @@ sub _add_overlay_object {
     ident   => 'bad overlay object type',
     message => qq{Unrecognised parameter object types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
     payload => {
-      signatures => ( join q{}, map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Class::Dir Gentoo::Overlay ) ),
+      signatures => ( join q{}, map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type => ( join q{,}, blessed $object, map { _type_print } @rest ),
     },
   );
