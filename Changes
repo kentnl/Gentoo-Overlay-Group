@@ -1,6 +1,8 @@
 ﻿Release history for Gentoo-Overlay-Group
 
 {{$NEXT}}
+
+0.2.0 2013-03-13T07:25:37Z
  [!Notable Changes]
  - Uses Path::Tiny instead of Path::Class
  - BACKCOMPAT: No longer accepts user constructed Path::Class objects as
