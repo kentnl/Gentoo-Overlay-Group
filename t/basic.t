@@ -63,12 +63,12 @@ is(
 is(
   exception {
     $g = Gentoo::Overlay::Group->new();
-    require Path::Class::Dir;
-    $g->add_overlay( Path::Class::Dir->new("$base/overlay_2") );
+    require Path::Tiny;
+    $g->add_overlay( Path::Tiny::path("$base/overlay_2") );
 
   },
   undef,
-  "Loading an overlay from a Path::Class::Dir path should work"
+  "Loading an overlay from a Path::Tiny path should work"
 );
 
 is(

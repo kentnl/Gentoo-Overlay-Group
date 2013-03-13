@@ -2,7 +2,7 @@ NAME
     Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
 
 VERSION
-    version 0.1.0
+    version 0.2.0
 
 SYNOPSIS
     This is a wrapper around "Gentoo::Overlay" that makes it easier to
@@ -33,7 +33,7 @@ SYNOPSIS
 METHODS
   add_overlay
       $object->add_overlay( '/path/to/overlay' );
-      $object->add_overlay( Path::Class::Dir->new( '/path/to/overlay' ) );
+      $object->add_overlay( Path::Tiny::path( '/path/to/overlay' ) );
       $object->add_overlay( Gentoo::Overlay->new( path => '/path/to/overlay' ) );
 
   iterate
@@ -67,7 +67,7 @@ PRIVATE ATTRIBUTE ACCESSORS
 
 PRIVATE FUNCTIONS
   _type_print
-    Lightweight flat dumper optimised for displaying user parameters in a
+    Lightweight flat dumper optimized for displaying user parameters in a
     format similar to a method signature.
 
       printf '[%s]', join q{,} , map { _type_print } @array
@@ -106,7 +106,7 @@ AUTHOR
     Kent Fredric <kentnl@cpan.org>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2012 by Kent Fredric <kentnl@cpan.org>.
+    This software is copyright (c) 2013 by Kent Fredric <kentnl@cpan.org>.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.

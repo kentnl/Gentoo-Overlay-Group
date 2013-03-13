@@ -6,7 +6,7 @@ BEGIN {
   $Gentoo::Overlay::Group::AUTHORITY = 'cpan:KENTNL';
 }
 {
-  $Gentoo::Overlay::Group::VERSION = '0.1.0';
+  $Gentoo::Overlay::Group::VERSION = '0.2.0';
 }
 
 # ABSTRACT: A collection of Gentoo::Overlay objects.
@@ -15,10 +15,10 @@ use Moose;
 
 use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw( :all );
-use MooseX::Types::Path::Class qw( Dir );
+use MooseX::Types::Path::Tiny qw( Dir );
 use namespace::autoclean;
 
-use Gentoo::Overlay 1.0000002;
+use Gentoo::Overlay v1.0.3;
 use Gentoo::Overlay::Types qw( :all );
 use Gentoo::Overlay::Exceptions qw( :all );
 use Scalar::Util qw( blessed );
@@ -63,7 +63,7 @@ sub add_overlay {
     ident   => 'bad overlay type',
     message => qq{Unrecognised parameter types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
     payload => {
-      signatures => ( join q{},  map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Class::Dir Gentoo::Overlay ) ),
+      signatures => ( join q{},  map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type       => ( join q{,}, map { _type_print } @args ),
     }
   );
@@ -210,7 +210,7 @@ sub _add_overlay_object {
     ident   => 'bad overlay object type',
     message => qq{Unrecognised parameter object types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
     payload => {
-      signatures => ( join q{}, map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Class::Dir Gentoo::Overlay ) ),
+      signatures => ( join q{}, map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type => ( join q{,}, blessed $object, map { _type_print } @rest ),
     },
   );
@@ -255,6 +255,7 @@ no Moose;
 1;
 
 __END__
+
 =pod
 
 =head1 NAME
@@ -263,7 +264,7 @@ Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
 
 =head1 VERSION
 
-version 0.1.0
+version 0.2.0
 
 =head1 SYNOPSIS
 
@@ -296,7 +297,7 @@ This is a wrapper around L<< C<Gentoo::Overlay>|Gentoo::Overlay >> that makes it
 =head2 add_overlay
 
   $object->add_overlay( '/path/to/overlay' );
-  $object->add_overlay( Path::Class::Dir->new( '/path/to/overlay' ) );
+  $object->add_overlay( Path::Tiny::path( '/path/to/overlay' ) );
   $object->add_overlay( Gentoo::Overlay->new( path => '/path/to/overlay' ) );
 
 =head2 iterate
@@ -342,7 +343,7 @@ This is a wrapper around L<< C<Gentoo::Overlay>|Gentoo::Overlay >> that makes it
 
 =head2 _type_print
 
-Lightweight flat dumper optimised for displaying user parameters in a format similar to a method signature.
+Lightweight flat dumper optimized for displaying user parameters in a format similar to a method signature.
 
   printf '[%s]', join q{,} , map { _type_print } @array
 
@@ -392,10 +393,9 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Kent Fredric <kentnl@cpan.org>.
+This software is copyright (c) 2013 by Kent Fredric <kentnl@cpan.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
