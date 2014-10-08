@@ -13,6 +13,7 @@ copyright_holder = Kent Fredric <kentnl@cpan.org>
 git_versions      = 1
 normal_form       = normal_3
 copyfiles         = LICENSE
+srcreadme         = mkdn
 
 ; version_major     = 0
 ; version_minor     = 1
