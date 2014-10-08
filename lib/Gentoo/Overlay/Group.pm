@@ -129,7 +129,11 @@ sub add_overlay {
   }
   return exception(
     ident   => 'bad overlay type',
-    message => qq{Unrecognised parameter types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
+    message => <<'EOF',
+Unrecognised parameter types passed to add_overlay.
+  Expected: \n%{signatures}s.
+  Got: [%{type}s]}.
+EOF
     payload => {
       signatures => ( join q{},  map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type       => ( join q{,}, map { _type_print } @args ),
@@ -316,7 +320,11 @@ sub _add_overlay_object {
   }
   return exception(
     ident   => 'bad overlay object type',
-    message => qq{Unrecognised parameter object types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
+    message => <<'EOF',
+Unrecognised parameter object types passed to add_overlay.
+  Expected: \n%{signatures}s.
+  Got: [%{type}s]}.
+EOF
     payload => {
       signatures => ( join q{}, map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type => ( join q{,}, blessed $object, map { _type_print } @rest ),
