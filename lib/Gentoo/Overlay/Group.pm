@@ -151,7 +151,7 @@ EOF
 =cut
 
 sub iterate {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, $what, $callback ) = @_;    ## no critic (Variables::ProhibitUnusedVarsStricter)
   my %method_map = (
     ebuilds    => _iterate_ebuilds    =>,
     categories => _iterate_categories =>,
@@ -175,7 +175,7 @@ sub iterate {
 =cut
 
 sub _iterate_ebuilds {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my $real_callback = sub {
     my (%package_config) = %{ $_[1] };
     my $inner_callback = sub {
@@ -197,7 +197,7 @@ sub _iterate_ebuilds {
 # categories = { /overlays/categories
 
 sub _iterate_categories {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my $real_callback = sub {
     my (%overlay_config) = %{ $_[1] };
     my $inner_callback = sub {
@@ -217,7 +217,7 @@ sub _iterate_categories {
 =cut
 
 sub _iterate_packages {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my $real_callback = sub {
     my (%category_config) = %{ $_[1] };
     my $inner_callback = sub {
@@ -238,7 +238,7 @@ sub _iterate_packages {
 
 # overlays = { /overlays }
 sub _iterate_overlays {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my %overlays     = $self->overlays;
   my $num_overlays = scalar keys %overlays;
   my $last_overlay = $num_overlays - 1;
@@ -292,7 +292,7 @@ sub __can_corce {
     $to_type->{_compiled_can_coerce} = sub {
       my $thing = shift;
       foreach my $coercion (@coercions) {
-        my ( $constraint, $converter ) = @{$coercion};
+        my ( $constraint, undef ) = @{$coercion};
         if ( $constraint->($thing) ) {
           return 1;
         }
@@ -339,7 +339,7 @@ EOF
 =cut
 
 sub _add_overlay_gentoo_object {
-  my ( $self, $object, @rest ) = @_;
+  my ( $self, $object, ) = @_;
   $_gentoo_overlay->assert_valid($object);
   if ( $self->_has_overlay( $object->name ) ) {
     return exception(
@@ -359,7 +359,7 @@ sub _add_overlay_gentoo_object {
 =cut
 
 sub _add_overlay_path_class {    ## no critic ( RequireArgUnpacking )
-  my ( $self, $path, @rest ) = @_;
+  my ( $self, $path, ) = @_;
   $_path_class_dir->assert_valid($path);
   my $go = Gentoo::Overlay->new( path => $path, );
   @_ = ( $self, $go );
@@ -373,7 +373,7 @@ sub _add_overlay_path_class {    ## no critic ( RequireArgUnpacking )
 =cut
 
 sub _add_overlay_string_path {    ## no critic ( RequireArgUnpacking )
-  my ( $self, $path_str, @rest ) = @_;
+  my ( $self, $path_str, ) = @_;
   $_str->assert_valid($path_str);
   my $path = $_path_class_dir->coerce($path_str);
   @_ = ( $self, $path );
