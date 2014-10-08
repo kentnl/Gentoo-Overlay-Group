@@ -10,16 +10,16 @@ our $VERSION = '1.000000';
 
 # AUTHORITY
 
-use Moose;
+use Moose qw( has );
 
-use MooseX::Has::Sugar;
-use MooseX::Types::Moose qw( :all );
+use MooseX::Has::Sugar qw( ro lazy );
+use MooseX::Types::Moose qw( HashRef Str );
 use MooseX::Types::Path::Tiny qw( Dir );
 use namespace::autoclean;
 
 use Gentoo::Overlay v1.0.3;
-use Gentoo::Overlay::Types qw( :all );
-use Gentoo::Overlay::Exceptions qw( :all );
+use Gentoo::Overlay::Types qw( Gentoo__Overlay_Overlay );
+use Gentoo::Overlay::Exceptions qw( exception );
 use Scalar::Util qw( blessed );
 
 =head1 SYNOPSIS
