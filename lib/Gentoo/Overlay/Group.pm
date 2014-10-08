@@ -7,6 +7,8 @@ our $VERSION = '1.000000';
 
 # ABSTRACT: A collection of Gentoo::Overlay objects.
 
+# AUTHORITY
+
 use Moose;
 
 use MooseX::Has::Sugar;
