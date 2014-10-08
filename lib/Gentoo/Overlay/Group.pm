@@ -107,7 +107,7 @@ sub _type_print {
   return
       ref $_     ? ref $_
     : defined $_ ? 'scalar<' . $_ . '>'
-    : 'scalar=undef'
+    :              'scalar=undef';
 
 }
 
