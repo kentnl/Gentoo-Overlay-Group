@@ -16,6 +16,8 @@ mantissa          = 6
 copyfiles         = LICENSE
 srcreadme         = mkdn
 twitter_extra_hash_tags = #gentoo
+toolkit           = eumm
+toolkit_hardness  = soft
 
 ; version_major     = 0
 ; version_minor     = 1
