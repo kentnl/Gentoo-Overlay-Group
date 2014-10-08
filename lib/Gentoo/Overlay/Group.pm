@@ -121,7 +121,7 @@ sub _type_print {
 
 sub add_overlay {
   my ( $self, @args ) = @_;
-  if ( @args == 1 and blessed $args[0] ) {
+  if ( 1 == @args and blessed $args[0] ) {
     goto $self->can('_add_overlay_object');
   }
   if ( $_str->check( $args[0] ) ) {
