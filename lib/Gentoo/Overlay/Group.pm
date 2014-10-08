@@ -22,35 +22,6 @@ use Gentoo::Overlay::Types qw( Gentoo__Overlay_Overlay );
 use Gentoo::Overlay::Exceptions qw( exception );
 use Scalar::Util qw( blessed );
 
-=head1 SYNOPSIS
-
-This is a wrapper around L<< C<Gentoo::Overlay>|Gentoo::Overlay >> that makes it easier to perform actions on a group of overlays.
-
-  my $group = Gentoo::Overlay::Group->new();
-  $group->add_overlay('/usr/portage');
-  $group->add_overlay('/usr/local/portage/');
-  $group->iterate( packages => sub {
-    my ( $self, $context ) = @_;
-    # Traverse-Order:
-    # ::gentoo
-    #   category_a
-    #     package_a
-    #     package_b
-    #   category_b
-    #     package_a
-    #     package_b
-    # ::hentoo
-    #   category_a
-    #     package_a
-    #     package_b
-    #   category_b
-    #     package_a
-    #     package_b
-  });
-
-
-=cut
-
 =p_attr _overlays
 
   isa => HashRef[ Gentoo__Overlay_Overlay ], ro, lazy
@@ -342,3 +313,31 @@ sub _add_overlay_string_path {    ## no critic ( RequireArgUnpacking )
 }
 
 1;
+
+=head1 SYNOPSIS
+
+This is a wrapper around L<< C<Gentoo::Overlay>|Gentoo::Overlay >> that makes it easier to perform actions on a group of overlays.
+
+  my $group = Gentoo::Overlay::Group->new();
+  $group->add_overlay('/usr/portage');
+  $group->add_overlay('/usr/local/portage/');
+  $group->iterate( packages => sub {
+    my ( $self, $context ) = @_;
+    # Traverse-Order:
+    # ::gentoo
+    #   category_a
+    #     package_a
+    #     package_b
+    #   category_b
+    #     package_a
+    #     package_b
+    # ::hentoo
+    #   category_a
+    #     package_a
+    #     package_b
+    #   category_b
+    #     package_a
+    #     package_b
+  });
+
+=cut
