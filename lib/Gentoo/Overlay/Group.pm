@@ -310,12 +310,12 @@ sub __can_corce {
 =cut
 
 sub _add_overlay_object {
-  my ( $self, $object, @rest ) = @_;
+  my ( $self, $overlay, @rest ) = @_;
 
-  if ( $_gentoo_overlay->check($object) ) {
+  if ( $_gentoo_overlay->check($overlay) ) {
     goto $self->can('_add_overlay_gentoo_object');
   }
-  if ( $_path_class_dir->check($object) ) {
+  if ( $_path_class_dir->check($overlay) ) {
     goto $self->can('_add_overlay_path_class');
   }
   return exception(
@@ -327,7 +327,7 @@ Unrecognised parameter object types passed to add_overlay.
 EOF
     payload => {
       signatures => ( join q{}, map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
-      type => ( join q{,}, blessed $object, map { _type_print } @rest ),
+      type => ( join q{,}, blessed $overlay, map { _type_print } @rest ),
     },
   );
 }
@@ -339,16 +339,16 @@ EOF
 =cut
 
 sub _add_overlay_gentoo_object {
-  my ( $self, $object, ) = @_;
-  $_gentoo_overlay->assert_valid($object);
-  if ( $self->_has_overlay( $object->name ) ) {
+  my ( $self, $overlay, ) = @_;
+  $_gentoo_overlay->assert_valid($overlay);
+  if ( $self->_has_overlay( $overlay->name ) ) {
     return exception(
       ident   => 'overlay exists',
       message => 'The overlay named %{overlay_name}s is already added to this group.',
-      payload => { overlay_name => $object->name },
+      payload => { overlay_name => $overlay->name },
     );
   }
-  $self->_set_overlay( $object->name, $object );
+  $self->_set_overlay( $overlay->name, $overlay );
   return;
 }
 
