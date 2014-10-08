@@ -14,6 +14,7 @@ git_versions      = 1
 normal_form       = normal_3
 copyfiles         = LICENSE
 srcreadme         = mkdn
+twitter_extra_hash_tags = #gentoo
 
 ; version_major     = 0
 ; version_minor     = 1
@@ -23,7 +24,6 @@ srcreadme         = mkdn
 ; version_rel_day   = 20
 ; version_rel_hour  = 15
 ; version_rel_time_zone = Pacific/Auckland
-twitter_hash_tags = #perl #cpan
 ; auto_prereqs_skip = File::Find
 
 [Prereqs]
