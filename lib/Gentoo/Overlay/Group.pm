@@ -133,7 +133,7 @@ sub add_overlay {
     payload => {
       signatures => ( join q{},  map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type       => ( join q{,}, map { _type_print } @args ),
-    }
+    },
   );
 }
 
