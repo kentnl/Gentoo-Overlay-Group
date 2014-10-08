@@ -81,7 +81,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::PluginBundle::Author::KENTNL v1.7.0 → 2.021000
 
  [Changed / runtime requires]
- - Gentoo::Overlay v1.0.3 → 2.000000
+ - Gentoo::Overlay v1.0.3 → 2.001001
  - perl v5.10.0 → 5.006
 
  [Changed / test requires]

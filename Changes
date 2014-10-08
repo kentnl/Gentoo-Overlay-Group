@@ -24,40 +24,13 @@
  - runtime: +5 ↑1 ↓1 -4
  - test: +2 ↓1 -2 (recommends: +3)
 
+ [Metadata]
+ - Migrate to kentnl org
+
 0.2.0 2013-03-13T07:25:37Z
  [!Notable Changes]
  - Uses Path::Tiny instead of Path::Class
  - BACKCOMPAT: No longer accepts user constructed Path::Class objects as params
-
- [Dependencies::Changed / build requires]
- - Module::Build 0.3601 → 0.4003
-
- [Dependencies::Changed / configure requires]
- - Module::Build 0.3601 → 0.4003
-
- [Dependencies::Changed / develop suggests]
- - Dist::Zill::PluginBundle::Author::KENTNL v1.3.0 → v1.7.0
-
- [Dependencies::Changed / runtime requires]
- - Gentoo::Overlay 1.0000002 → v1.0.3
-
- [Dependencies::Changed / test requires]
- - Test::More 0.96 → 0.98
-
- [Dependencies::New / develop requires]
- - Pod::Coverage::TrustPod
- - Test::CPAN::Meta
- - Test::Pod
- - Test::Pod::Coverage
- - version
-
- [Dependencies::New / runtime requires]
- - MooseX::Types::Path::Tiny
- - Path::Tiny
-
- [Dependencies::Removed / runtime requires]
- - MooseX::Types::Path::Class
- - Path::Class::Dir
 
  [Dependencies::Stats]
  - Dependencies changed since 0.1.0, see misc/*.deps* for details

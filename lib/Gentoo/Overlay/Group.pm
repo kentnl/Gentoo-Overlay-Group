@@ -17,7 +17,7 @@ use Types::Standard qw( HashRef Str );
 use Types::Path::Tiny qw( Dir );
 use namespace::clean;
 
-use Gentoo::Overlay 2.000000;
+use Gentoo::Overlay 2.001001;
 use Gentoo::Overlay::Types qw( Gentoo__Overlay_Overlay );
 use Gentoo::Overlay::Exceptions qw( exception );
 use Scalar::Util qw( blessed );
