@@ -4,11 +4,11 @@ Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
 
 # VERSION
 
-version 0.2.0
+version 0.2.1
 
 # SYNOPSIS
 
-This is a wrapper around [`Gentoo::Overlay`](http://search.cpan.org/perldoc?Gentoo::Overlay) that makes it easier to perform actions on a group of overlays.
+This is a wrapper around [`Gentoo::Overlay`](https://metacpan.org/pod/Gentoo::Overlay) that makes it easier to perform actions on a group of overlays.
 
     my $group = Gentoo::Overlay::Group->new();
     $group->add_overlay('/usr/portage');
@@ -43,7 +43,6 @@ This is a wrapper around [`Gentoo::Overlay`](http://search.cpan.org/perldoc?Gent
 ## iterate
 
     $object->iterate( ebuilds => sub {
-
 
 
     });
@@ -134,7 +133,7 @@ Kent Fredric <kentnl@cpan.org>
 
 # COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric <kentnl@cpan.org>.
+This software is copyright (c) 2014 by Kent Fredric <kentnl@cpan.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

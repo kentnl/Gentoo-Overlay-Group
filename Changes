@@ -1,12 +1,18 @@
 ﻿Release history for Gentoo-Overlay-Group
 
 {{$NEXT}}
+ [Dependencies::Stats]
+ - Dependencies changed since 0.2.0, see misc/*.deps* for details
+ - build: ↑1
+ - configure: ↑1
+ - develop: +50 -2 (recommends: -1, suggests: +1 -1)
+ - runtime: ↓1
+ - test: +2 ↑1 -2 (recommends: +1)
 
 0.2.0 2013-03-13T07:25:37Z
  [!Notable Changes]
  - Uses Path::Tiny instead of Path::Class
- - BACKCOMPAT: No longer accepts user constructed Path::Class objects as
-   params
+ - BACKCOMPAT: No longer accepts user constructed Path::Class objects as params
 
  [Dependencies::Changed / build requires]
  - Module::Build 0.3601 → 0.4003
@@ -37,6 +43,14 @@
  [Dependencies::Removed / runtime requires]
  - MooseX::Types::Path::Class
  - Path::Class::Dir
+
+ [Dependencies::Stats]
+ - Dependencies changed since 0.1.0, see misc/*.deps* for details
+ - build: ↑1
+ - configure: ↑1
+ - develop: +5 (suggests: ↑1)
+ - runtime: +1 ↑1 -1
+ - test: +1 ↑1 -1
 
  [Documentation]
  - Copyright year
