@@ -9,9 +9,10 @@ copyright_holder = Kent Fredric <kentnl@cpan.org>
 ; [Bootstrap::lib]
 
 [@Author::KENTNL]
-:version          = 1.2.0
-git_versions      = 1
-normal_form       = normal_3
+:version          = 2.021
+bumpversions      = 1
+normal_form       = numify
+mantissa          = 6
 copyfiles         = LICENSE
 srcreadme         = mkdn
 twitter_extra_hash_tags = #gentoo

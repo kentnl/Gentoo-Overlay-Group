@@ -1,6 +1,11 @@
 ﻿Release history for Gentoo-Overlay-Group
 
 {{$NEXT}}
+ [00 Major - Version Scheme Change]
+ - Migrating from 0.x.y to 1.xxxyyy
+ - This may affect hand-operated downstreams
+ - https://questhub.io/realm/perl/quest/5388d3a9bbd0be2224000129
+
  [Dependencies::Stats]
  - Dependencies changed since 0.2.0, see misc/*.deps* for details
  - build: ↑1

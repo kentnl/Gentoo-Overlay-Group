@@ -4,7 +4,7 @@ Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
 
 # VERSION
 
-version 0.2.1
+version 1.000000
 
 # SYNOPSIS
 
