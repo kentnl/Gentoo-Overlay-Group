@@ -10,14 +10,14 @@ our $VERSION = '1.000000';
 
 # AUTHORITY
 
-use Moose qw( has );
-
+use Moo qw( has );
+use MooX::HandlesVia;
 use MooseX::Has::Sugar qw( ro lazy );
-use MooseX::Types::Moose qw( HashRef Str );
-use MooseX::Types::Path::Tiny qw( Dir );
-use namespace::autoclean;
+use Types::Standard qw( HashRef Str );
+use Types::Path::Tiny qw( Dir );
+use namespace::clean;
 
-use Gentoo::Overlay v1.0.3;
+use Gentoo::Overlay 2.000000;
 use Gentoo::Overlay::Types qw( Gentoo__Overlay_Overlay );
 use Gentoo::Overlay::Exceptions qw( exception );
 use Scalar::Util qw( blessed );
@@ -82,9 +82,9 @@ This is a wrapper around L<< C<Gentoo::Overlay>|Gentoo::Overlay >> that makes it
 has '_overlays' => (
   ro, lazy,
   isa => HashRef [Gentoo__Overlay_Overlay],
-  traits  => [qw( Hash )],
-  default => sub { return {} },
-  handles => {
+  default     => sub { return {} },
+  handles_via => 'Hash',
+  handles     => {
     _has_overlay  => exists   =>,
     overlay_names => keys     =>,
     overlays      => elements =>,
@@ -264,45 +264,6 @@ my $_path_class_dir = Dir();
 
 # This would be better in M:M:TypeCoercion
 
-=p_func __can_coerce
-
-  if( __can_coerce( MX::Type Object , $thing_to_coerce ) ) {
-
-  }
-
-=cut
-
-sub __can_corce {
-  my ( $to_type, $from_thing ) = @_;
-  if ( not defined $to_type->{_compiled_can_coerce} ) {
-    my @coercion_map = @{ $to_type->type_coercion_map };
-    my @coercions;
-    while (@coercion_map) {
-      my ( $constraint_name, $action ) = ( splice @coercion_map, 0, 2 );
-      my $type_constraint =
-        ref $constraint_name ? $constraint_name : Moose::Util::TypeConstraints::find_or_parse_type_constraint($constraint_name);
-
-      if ( not defined $type_constraint ) {
-        require Moose;
-        Moose->throw_error("Could not find the type constraint ($constraint_name) to coerce from");
-      }
-
-      push @coercions => [ $type_constraint->_compiled_type_constraint, $action ];
-    }
-    $to_type->{_compiled_can_coerce} = sub {
-      my $thing = shift;
-      foreach my $coercion (@coercions) {
-        my ( $constraint, undef ) = @{$coercion};
-        if ( $constraint->($thing) ) {
-          return 1;
-        }
-      }
-      return;
-    };
-  }
-  return $to_type->{_compiled_can_coerce}->($from_thing);
-}
-
 =p_method _add_overlay_object
 
   $groupobject->_add_overlay_object( $object );
@@ -379,8 +340,5 @@ sub _add_overlay_string_path {    ## no critic ( RequireArgUnpacking )
   @_ = ( $self, $path );
   goto $self->can('_add_overlay_path_class');
 }
-
-__PACKAGE__->meta->make_immutable;
-no Moose;
 
 1;

@@ -61,6 +61,13 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  [Added / develop suggests]
  - Dist::Zilla::App::Command::bakeini 0.001002
 
+ [Added / runtime requires]
+ - Moo
+ - MooX::HandlesVia
+ - Types::Path::Tiny
+ - Types::Standard
+ - namespace::clean
+
  [Added / test recommends]
  - CPAN::Meta 2.120900
  - ExtUtils::MakeMaker 6.98
@@ -74,6 +81,7 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  - Dist::Zilla::PluginBundle::Author::KENTNL v1.7.0 → 2.021000
 
  [Changed / runtime requires]
+ - Gentoo::Overlay v1.0.3 → 2.000000
  - perl v5.10.0 → 5.006
 
  [Changed / test requires]
@@ -91,6 +99,12 @@ This file contains ALL changes in dependencies in both REQUIRED / OPTIONAL depen
  [Removed / develop requires]
  - Dist::Zilla::PluginBundle::Author::KENTNL::Lite
  - version 0.9901
+
+ [Removed / runtime requires]
+ - Moose
+ - MooseX::Types::Moose
+ - MooseX::Types::Path::Tiny
+ - namespace::autoclean
 
  [Removed / test requires]
  - File::Find

@@ -87,12 +87,6 @@ Lightweight flat dumper optimized for displaying user parameters in a format sim
 
     printf '[%s]', join q{,} , map { _type_print } @array
 
-## \_\_can\_coerce
-
-    if( __can_coerce( MX::Type Object , $thing_to_coerce ) ) {
-
-    }
-
 # PRIVATE METHODS
 
 ## \_iterate\_ebuilds
