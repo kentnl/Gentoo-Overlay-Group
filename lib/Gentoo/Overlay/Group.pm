@@ -1,36 +1,61 @@
+use 5.006;
 use strict;
 use warnings;
 
 package Gentoo::Overlay::Group;
-BEGIN {
-  $Gentoo::Overlay::Group::AUTHORITY = 'cpan:KENTNL';
-}
-{
-  $Gentoo::Overlay::Group::VERSION = '0.2.0';
-}
+
+our $VERSION = '1.000000';
 
 # ABSTRACT: A collection of Gentoo::Overlay objects.
 
-use Moose;
+our $AUTHORITY = 'cpan:KENTNL'; # AUTHORITY
 
-use MooseX::Has::Sugar;
-use MooseX::Types::Moose qw( :all );
-use MooseX::Types::Path::Tiny qw( Dir );
-use namespace::autoclean;
+use Moo qw( has );
+use MooX::HandlesVia;
+use MooseX::Has::Sugar qw( ro lazy );
+use Types::Standard qw( HashRef Str );
+use Types::Path::Tiny qw( Dir );
+use namespace::clean;
 
-use Gentoo::Overlay v1.0.3;
-use Gentoo::Overlay::Types qw( :all );
-use Gentoo::Overlay::Exceptions qw( :all );
+use Gentoo::Overlay 2.001001;
+use Gentoo::Overlay::Types qw( Gentoo__Overlay_Overlay );
+use Gentoo::Overlay::Exceptions qw( exception );
 use Scalar::Util qw( blessed );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 has '_overlays' => (
   ro, lazy,
   isa => HashRef [Gentoo__Overlay_Overlay],
-  traits  => [qw( Hash )],
-  default => sub { return {} },
-  handles => {
+  default     => sub { return {} },
+  handles_via => 'Hash',
+  handles     => {
     _has_overlay  => exists   =>,
     overlay_names => keys     =>,
     overlays      => elements =>,
@@ -42,18 +67,32 @@ has '_overlays' => (
 my $_str = Str();
 
 
+
+
+
+
+
+
+
 sub _type_print {
   return
       ref $_     ? ref $_
     : defined $_ ? 'scalar<' . $_ . '>'
-    : 'scalar=undef'
+    :              'scalar=undef';
 
 }
 
 
+
+
+
+
+
+
+
 sub add_overlay {
   my ( $self, @args ) = @_;
-  if ( @args == 1 and blessed $args[0] ) {
+  if ( 1 == @args and blessed $args[0] ) {
     goto $self->can('_add_overlay_object');
   }
   if ( $_str->check( $args[0] ) ) {
@@ -61,17 +100,29 @@ sub add_overlay {
   }
   return exception(
     ident   => 'bad overlay type',
-    message => qq{Unrecognised parameter types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
+    message => <<'EOF',
+Unrecognised parameter types passed to add_overlay.
+  Expected: \n%{signatures}s.
+  Got: [%{type}s]}.
+EOF
     payload => {
       signatures => ( join q{},  map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
       type       => ( join q{,}, map { _type_print } @args ),
-    }
+    },
   );
 }
 
 
+
+
+
+
+
+
+
+
 sub iterate {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, $what, $callback ) = @_;    ## no critic (Variables::ProhibitUnusedVarsStricter)
   my %method_map = (
     ebuilds    => _iterate_ebuilds    =>,
     categories => _iterate_categories =>,
@@ -89,8 +140,13 @@ sub iterate {
 }
 
 
+
+
+
+
+
 sub _iterate_ebuilds {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my $real_callback = sub {
     my (%package_config) = %{ $_[1] };
     my $inner_callback = sub {
@@ -104,10 +160,15 @@ sub _iterate_ebuilds {
 }
 
 
+
+
+
+
+
 # categories = { /overlays/categories
 
 sub _iterate_categories {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my $real_callback = sub {
     my (%overlay_config) = %{ $_[1] };
     my $inner_callback = sub {
@@ -121,8 +182,13 @@ sub _iterate_categories {
 }
 
 
+
+
+
+
+
 sub _iterate_packages {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my $real_callback = sub {
     my (%category_config) = %{ $_[1] };
     my $inner_callback = sub {
@@ -136,9 +202,14 @@ sub _iterate_packages {
 }
 
 
+
+
+
+
+
 # overlays = { /overlays }
 sub _iterate_overlays {
-  my ( $self, $what, $callback ) = @_;
+  my ( $self, undef, $callback ) = @_;
   my %overlays     = $self->overlays;
   my $num_overlays = scalar keys %overlays;
   my $last_overlay = $num_overlays - 1;
@@ -165,75 +236,62 @@ my $_path_class_dir = Dir();
 # This would be better in M:M:TypeCoercion
 
 
-sub __can_corce {
-  my ( $to_type, $from_thing ) = @_;
-  if ( not defined $to_type->{_compiled_can_coerce} ) {
-    my @coercion_map = @{ $to_type->type_coercion_map };
-    my @coercions;
-    while (@coercion_map) {
-      my ( $constraint_name, $action ) = ( splice @coercion_map, 0, 2 );
-      my $type_constraint =
-        ref $constraint_name ? $constraint_name : Moose::Util::TypeConstraints::find_or_parse_type_constraint($constraint_name);
 
-      if ( not defined $type_constraint ) {
-        require Moose;
-        Moose->throw_error("Could not find the type constraint ($constraint_name) to coerce from");
-      }
 
-      push @coercions => [ $type_constraint->_compiled_type_constraint, $action ];
-    }
-    $to_type->{_compiled_can_coerce} = sub {
-      my $thing = shift;
-      foreach my $coercion (@coercions) {
-        my ( $constraint, $converter ) = @{$coercion};
-        if ( $constraint->($thing) ) {
-          return 1;
-        }
-      }
-      return;
-    };
-  }
-  return $to_type->{_compiled_can_coerce}->($from_thing);
-}
+
 
 
 sub _add_overlay_object {
-  my ( $self, $object, @rest ) = @_;
+  my ( $self, $overlay, @rest ) = @_;
 
-  if ( $_gentoo_overlay->check($object) ) {
+  if ( $_gentoo_overlay->check($overlay) ) {
     goto $self->can('_add_overlay_gentoo_object');
   }
-  if ( $_path_class_dir->check($object) ) {
+  if ( $_path_class_dir->check($overlay) ) {
     goto $self->can('_add_overlay_path_class');
   }
   return exception(
     ident   => 'bad overlay object type',
-    message => qq{Unrecognised parameter object types passed to add_overlay. Expected: \n%{signatures}s. Got: [%{type}s]},
+    message => <<'EOF',
+Unrecognised parameter object types passed to add_overlay.
+  Expected: \n%{signatures}s.
+  Got: [%{type}s]}.
+EOF
     payload => {
       signatures => ( join q{}, map { qq{    \$group->add_overlay( $_ );\n} } qw( Str Path::Tiny Gentoo::Overlay ) ),
-      type => ( join q{,}, blessed $object, map { _type_print } @rest ),
+      type => ( join q{,}, blessed $overlay, map { _type_print } @rest ),
     },
   );
 }
 
 
+
+
+
+
+
 sub _add_overlay_gentoo_object {
-  my ( $self, $object, @rest ) = @_;
-  $_gentoo_overlay->assert_valid($object);
-  if ( $self->_has_overlay( $object->name ) ) {
+  my ( $self, $overlay, ) = @_;
+  $_gentoo_overlay->assert_valid($overlay);
+  if ( $self->_has_overlay( $overlay->name ) ) {
     return exception(
       ident   => 'overlay exists',
       message => 'The overlay named %{overlay_name}s is already added to this group.',
-      payload => { overlay_name => $object->name },
+      payload => { overlay_name => $overlay->name },
     );
   }
-  $self->_set_overlay( $object->name, $object );
+  $self->_set_overlay( $overlay->name, $overlay );
   return;
 }
 
 
+
+
+
+
+
 sub _add_overlay_path_class {    ## no critic ( RequireArgUnpacking )
-  my ( $self, $path, @rest ) = @_;
+  my ( $self, $path, ) = @_;
   $_path_class_dir->assert_valid($path);
   my $go = Gentoo::Overlay->new( path => $path, );
   @_ = ( $self, $go );
@@ -241,16 +299,18 @@ sub _add_overlay_path_class {    ## no critic ( RequireArgUnpacking )
 }
 
 
+
+
+
+
+
 sub _add_overlay_string_path {    ## no critic ( RequireArgUnpacking )
-  my ( $self, $path_str, @rest ) = @_;
+  my ( $self, $path_str, ) = @_;
   $_str->assert_valid($path_str);
   my $path = $_path_class_dir->coerce($path_str);
   @_ = ( $self, $path );
   goto $self->can('_add_overlay_path_class');
 }
-
-__PACKAGE__->meta->make_immutable;
-no Moose;
 
 1;
 
@@ -258,13 +318,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
 
 =head1 VERSION
 
-version 0.2.0
+version 1.000000
 
 =head1 SYNOPSIS
 
@@ -347,12 +409,6 @@ Lightweight flat dumper optimized for displaying user parameters in a format sim
 
   printf '[%s]', join q{,} , map { _type_print } @array
 
-=head2 __can_coerce
-
-  if( __can_coerce( MX::Type Object , $thing_to_coerce ) ) {
-
-  }
-
 =head1 PRIVATE METHODS
 
 =head2 _iterate_ebuilds
@@ -393,7 +449,7 @@ Kent Fredric <kentnl@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Kent Fredric <kentnl@cpan.org>.
+This software is copyright (c) 2014 by Kent Fredric <kentnl@cpan.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

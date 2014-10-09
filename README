@@ -2,7 +2,7 @@ NAME
     Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
 
 VERSION
-    version 0.2.0
+    version 1.000000
 
 SYNOPSIS
     This is a wrapper around "Gentoo::Overlay" that makes it easier to
@@ -72,11 +72,6 @@ PRIVATE FUNCTIONS
 
       printf '[%s]', join q{,} , map { _type_print } @array
 
-  __can_coerce
-      if( __can_coerce( MX::Type Object , $thing_to_coerce ) ) {
-
-      }
-
 PRIVATE METHODS
   _iterate_ebuilds
       $object->_iterate_ebuilds( ignored => sub { } );
@@ -106,7 +101,7 @@ AUTHOR
     Kent Fredric <kentnl@cpan.org>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2013 by Kent Fredric <kentnl@cpan.org>.
+    This software is copyright (c) 2014 by Kent Fredric <kentnl@cpan.org>.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.
