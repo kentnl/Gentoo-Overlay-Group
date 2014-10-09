@@ -1,6 +1,8 @@
 ﻿Release history for Gentoo-Overlay-Group
 
 {{$NEXT}}
+
+1.000000 2014-10-08T06:59:17Z 23ddf32
  [00 Major - Version Scheme Change]
  - Migrating from 0.x.y to 1.xxxyyy
  - This may affect hand-operated downstreams
