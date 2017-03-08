@@ -1,6 +1,8 @@
-﻿Release history for Gentoo-Overlay-Group
+Release history for Gentoo-Overlay-Group
 
 {{$NEXT}}
+
+1.000001 2017-03-08T11:49:04Z f4c64a9
  - Bugfix: Avoid test failures on -Ddefault_inc_excludes_dot
 
  [Dependencies::Stats]
