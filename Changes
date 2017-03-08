@@ -1,4 +1,14 @@
-﻿Release history for Gentoo-Overlay-Group
+Release history for Gentoo-Overlay-Group
+
+1.000001 2017-03-08T11:49:04Z f4c64a9
+ - Bugfix: Avoid test failures on -Ddefault_inc_excludes_dot
+
+ [Dependencies::Stats]
+ - Dependencies changed since 1.000000, see misc/*.deps* for details
+ - configure: +1 (recommends: ↑1)
+ - develop: +11 ↑3 -3 (recommends: +1, suggests: ↑2)
+ - runtime: (recommends: +1)
+ - test: +1 (recommends: +1 ↑1 ↓1)
 
 1.000000 2014-10-08T06:59:17Z 23ddf32
  [00 Major - Version Scheme Change]
@@ -49,4 +59,3 @@
 
 0.1.0 2012-06-21T13:32:12Z
  - First version.
-

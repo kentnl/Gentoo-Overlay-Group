@@ -1,108 +1,27 @@
-NAME
-    Gentoo::Overlay::Group - A collection of Gentoo::Overlay objects.
-
-VERSION
-    version 1.000000
-
-SYNOPSIS
-    This is a wrapper around "Gentoo::Overlay" that makes it easier to
-    perform actions on a group of overlays.
-
-      my $group = Gentoo::Overlay::Group->new();
-      $group->add_overlay('/usr/portage');
-      $group->add_overlay('/usr/local/portage/');
-      $group->iterate( packages => sub {
-        my ( $self, $context ) = @_;
-        # Traverse-Order:
-        # ::gentoo
-        #   category_a
-        #     package_a
-        #     package_b
-        #   category_b
-        #     package_a
-        #     package_b
-        # ::hentoo
-        #   category_a
-        #     package_a
-        #     package_b
-        #   category_b
-        #     package_a
-        #     package_b
-      });
-
-METHODS
-  add_overlay
-      $object->add_overlay( '/path/to/overlay' );
-      $object->add_overlay( Path::Tiny::path( '/path/to/overlay' ) );
-      $object->add_overlay( Gentoo::Overlay->new( path => '/path/to/overlay' ) );
-
-  iterate
-      $object->iterate( ebuilds => sub {
+Gentoo::Overlay::Group
 
 
-      });
 
-ATTRIBUTE ACCESSORS
-  overlay_names
-      my @names = $object->overlay_names
+INSTALLATION
 
-  overlays
-      my @overlays = $object->overlays;
+This is a Perl module distribution. It should be installed with whichever
+tool you use to manage your installation of Perl, e.g. any of
 
-  get_overlay
-      my $overlay = $object->get_overlay('gentoo');
+  cpanm .
+  cpan  .
+  cpanp -i .
 
-PRIVATE ATTRIBUTES
-  _overlays
-      isa => HashRef[ Gentoo__Overlay_Overlay ], ro, lazy
+Consult http://www.cpan.org/modules/INSTALL.html for further instruction.
+Should you wish to install this module manually, the procedure is
 
-PRIVATE ATTRIBUTE ACCESSORS
-  _has_overlay
-      if( $object->_has_overlay('gentoo') ){
-        Carp::croak('waah');
-      }
-
-  _set_overlay
-      $object->_set_overlay( 'gentoo' => $overlay_object );
-
-PRIVATE FUNCTIONS
-  _type_print
-    Lightweight flat dumper optimized for displaying user parameters in a
-    format similar to a method signature.
-
-      printf '[%s]', join q{,} , map { _type_print } @array
-
-PRIVATE METHODS
-  _iterate_ebuilds
-      $object->_iterate_ebuilds( ignored => sub { } );
-
-  _iterate_categories
-      $object->_iterate_categories( ignored => sub { } );
-
-  _iterate_packages
-      $object->_iterate_packages( ignored => sub { } );
-
-  _iterate_overlays
-      $object->_iterate_overlays( ignored => sub { } );
-
-  _add_overlay_object
-      $groupobject->_add_overlay_object( $object );
-
-  _add_overlay_gentoo_object
-      $groupobject->_add_overlay_gentoo_object( $gentoo_object );
-
-  _add_overlay_path_class
-      $groupobject->_add_overlay_path_class( $path_class_object );
-
-  _add_overlay_string_path
-      $groupobject->_add_overlay_string_path( $path_string );
-
-AUTHOR
-    Kent Fredric <kentnl@cpan.org>
+  perl Makefile.PL
+  make
+  make test
+  make install
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2014 by Kent Fredric <kentnl@cpan.org>.
 
-    This is free software; you can redistribute it and/or modify it under
-    the same terms as the Perl 5 programming language system itself.
+This software is copyright (c) 2017 by Kent Fredric <kentnl@cpan.org>.
 
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
